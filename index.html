@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8"><title>Greyhound Fashion – สรุปการจัดส่ง</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#eef3fb;--card:#fff;--tx:#0d2350;--mu:#5d6f93;--bd:#d5e0f2;--nv:#0b2a6b;--nv2:#13408f;--ac:#2f6fe4;--ok:#168a4a;--bad:#d1365a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1428;--card:#122044;--tx:#e8eefb;--mu:#9db0d6;--bd:#26396b}}
+:root[data-theme="dark"]{--bg:#0b1428;--card:#122044;--tx:#e8eefb;--mu:#9db0d6;--bd:#26396b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 "Sarabun","Noto Sans Thai",system-ui,sans-serif}
+.w{max-width:1200px;margin:auto;padding:12px}
+.hd{background:linear-gradient(110deg,#061a45,#13408f);color:#fff;border-radius:14px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.hd b{letter-spacing:.25em;font-size:20px}.hd small{display:block;letter-spacing:.35em;font-size:11px;opacity:.85}.hd h1{margin:0;font-size:22px}.hd p{margin:2px 0 0;opacity:.85;font-size:13px}
+.live{font-size:12px;opacity:.9}.live i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#8a96b3;margin-right:5px}.live.on i{background:#3ddc84}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;align-items:center}
+.tabs button,.btn{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:7px 14px;border-radius:999px;font:inherit;cursor:pointer}
+.tabs button.a,.btn.p{background:var(--nv2);border-color:var(--nv2);color:#fff}.btn.d{color:var(--bad);border-color:var(--bad)}
+.sec{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:10px 0;overflow:hidden}
+.sec>h2{margin:0;background:var(--nv);color:#fff;font-size:15px;padding:8px 14px}.sec>div{padding:10px}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.k{border:1px solid var(--bd);border-radius:10px;padding:10px;text-align:center}.k b{display:block;font-size:26px;color:var(--nv2)}.k span{font-size:12px;color:var(--mu)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .k b{color:#8db4ff}}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:800px){.g2{grid-template-columns:1fr}}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}
+th{background:var(--nv);color:#fff;padding:6px 8px;white-space:nowrap;font-weight:600}td{padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;white-space:nowrap}
+td:first-child{text-align:left}tr:nth-child(even) td{background:rgba(47,111,228,.05)}tr.t td{font-weight:700}tr.cl{cursor:pointer}.off td{color:var(--mu)}
+.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}label{font-size:12px;color:var(--mu);display:block}
+input,select{width:100%;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+.m{color:var(--mu);font-size:12px}#msg{margin-left:8px;font-size:13px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:110px;overflow-x:auto}.bars div{flex:1;min-width:14px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:10px;color:var(--mu)}.bars u{display:block;width:100%;background:var(--ac);border-radius:3px 3px 0 0}
+#lg{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:9}#lg .sec{width:min(360px,92vw)}#lg input{margin:6px 0}.who{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:4px}.who button{padding:2px 10px;font-size:12px}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div class="w">
+<div class="hd"><div><b>GREYHOUND</b><small>FASHION</small></div><div><h1>สรุปข้อมูลการจัดส่งสินค้า</h1><p id="sub"></p></div><div><div class="live" id="live"><i></i><span>กำลังเชื่อมต่อ…</span></div><div class="live who" id="who"></div></div></div>
+<div id="lg"><div class="sec"><h2>เข้าสู่ระบบ</h2><div><label>อีเมล / ชื่อผู้ใช้</label><input id="em" type="email" autocomplete="username"><label>รหัสผ่าน</label><input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"><p><button class="btn p" onclick="login()">เข้าสู่ระบบ</button></p><p class="m" id="lge"></p></div></div></div>
+<div class="tabs" id="vt"></div><div id="v"></div></div>
+<script>
+const SUPABASE_URL="https://podvxugkvcwuypjujdik.supabase.co",SUPABASE_ANON_KEY="sb_publishable_P01U-QO0gzTQPZL7eT97dw_WiOcGEaO";
+const SEED=[["2026-09-01",0,"ปฐมพงศ์",0,0,2,1,0,58197,58243,1,0,0,70,0],["2026-09-01",1,"พรภพ",0,0,1,1,0,75252,75319,1,0,0,80,0],["2026-09-02",1,"ปฐมพงศ์",50,0,6,2,2,75328,75437,2,0,0,65,0],["2026-09-02",2,"พรภพ",50,0,0,0,0,0,0,0,0,0,0,0],["2026-09-03",0,"ปฐมพงศ์",0,0,3,2,2,58251,58309,1,0,0,70,0],["2026-09-03",1,"พรภพ",0,0,2,2,2,75446,75602,1,0,0,85,0],["2026-09-04",0,"ปฐมพงศ์",0,0,17,2,0,58316,58379,1,0,0,50,0],["2026-09-04",2,"พรภพ",0,0,0,0,0,0,0,0,0,0,0,0],["2026-09-07",0,"ปฐมพงศ์",50,0,7,1,2,58379,58482,2,0,0,100,0],["2026-09-07",1,"พรภพ",0,0,2,1,1,75609,75707,1,0,0,140,0],["2026-09-08",1,"พรภพ",0,0,3,2,1,75714,75771,1,0,0,80,0],["2026-09-08",0,"ปฐมพงศ์",50,0,6,3,2,58482,58542,2,0,0,70,0],["2026-09-09",1,"พรภพ",0,0,3,2,1,75779,75898,1,0,0,85,0],["2026-09-09",0,"ปฐมพงศ์",0,0,2,1,1,58549,58615,1,0,0,100,0],["2026-09-10",1,"พรภพ",0,0,5,2,1,75905,76020,1,0,0,30,0],["2026-09-10",0,"ปฐมพงศ์",50,0,6,3,2,58615,58678,2,0,0,70,0],["2026-09-11",1,"พรภพ",0,0,2,1,1,76027,76060,1,0,0,0,0],["2026-09-11",0,"ปฐมพงศ์",0,0,4,1,1,58683,58734,1,0,0,70,0],["2026-09-14",1,"ปฐมพงศ์",0,0,2,1,1,76068,76168,1,0,0,140,0],["2026-09-15",0,"ศิริชัย",0,0,3,4,2,58741,58937,2,0,0,230,0],["2026-09-15",1,"พรภพ",0,0,3,1,1,76175,76233,1,0,0,80,0],["2026-09-16",0,"ปฐมพงศ์",0,0,4,1,1,58945,59006,1,0,0,120,0],["2026-09-16",1,"พรภพ",50,0,5,3,2,76241,76362,2,0,0,90,0],["2026-09-17",0,"ปฐมพงศ์",0,0,1,1,1,59006,59055,1,0,0,70,0],["2026-09-17",1,"พรภพ",0,0,3,2,1,76370,76480,1,0,0,100,0],["2026-09-18",1,"พรภพ",0,0,4,2,1,59062,59107,1,0,0,100,0],["2026-09-19",0,"ปฐมพงศ์",0,0,0,0,0,0,0,1,0,0,0,0],["2026-09-19",1,"พรภพ",0,0,0,0,0,0,0,1,0,0,0,0],["2026-09-20",0,"ปฐมพงศ์",0,0,0,0,0,0,0,1,0,0,0,0],["2026-09-20",1,"พรภพ",0,0,0,0,0,0,0,1,0,0,0,0],["2026-09-21",0,"ศิริชัย",0,0,2,2,1,59116,59173,1,0,0,120,0],["2026-09-21",1,"พรภพ",0,0,2,2,2,76481,76580,2,0,0,140,0],["2026-09-22",0,"ปฐมพงศ์",0,0,1,2,1,59180,59239,1,0,0,70,0],["2026-09-22",1,"พรภพ",0,0,1,1,1,76587,76658,1,0,0,80,0],["2026-09-23",0,"ปฐมพงศ์",0,0,3,2,1,59239,59335,1,0,0,150,0],["2026-09-23",1,"พรภพ",0,0,3,3,2,76680,76779,2,0,0,30,0],["2026-09-24",0,"ศิริชัย",0,0,4,3,1,59335,59385,1,0,0,120,0],["2026-09-24",1,"พรภพ",0,0,2,2,1,76791,76870,1,0,0,95,0],["2026-09-25",1,"พรภพ",0,0,2,2,1,76879,76991,1,0,0,65,0],["2026-09-28",1,"พรภพ",0,0,1,1,2,76998,77046,2,0,0,0,0],["2026-09-29",1,"พรภพ",0,0,2,3,2,77097,77192,2,0,0,0,0],["2026-09-29",0,"ศิริชัย",0,0,3,2,1,59394,59443,1,0,0,0,0],["2026-09-30",0,"ศิริชัย",0,0,3,2,1,59452,59539,1,0,0,175,0],["2026-09-30",1,"พรภพ",0,0,4,3,2,77192,77300,2,0,0,30,0]];const PL=["3ฒศ4415","3ฒศ4416","พนักงานเสริม"],MN=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const $=s=>document.querySelector(s),n=x=>Number(x)||0,f=(x,d=0)=>n(x).toLocaleString("th-TH",{minimumFractionDigits:d,maximumFractionDigits:d});
+const td=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+let S={v:"month",date:td(),ym:td().slice(0,7),rows:{},stops:{},sf:null,db:null,unsub:null,pi:0};
+const CAR=950,carOf=r=>r.pi<2?((r.car==null||r.car==="")?CAR:n(r.car)):n(r.car);
+const kmOf=r=>r.pi<2?Math.max(0,n(r.ke)-n(r.ks)):0,fuel=r=>kmOf(r)/8*39;
+const cost=r=>carOf(r)+n(r.wage)+n(r.ot)+n(r.al)+n(r.drv)+n(r.r2)+n(r.r3)+fuel(r)+n(r.tire)+n(r.park)+n(r.toll)+n(r.oth);
+const bd=s=>{const[y,m,d]=s.split("-");return d+"/"+m+"/"+(+y+543)};
+const rowsAll=()=>Object.values(S.rows).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.pi-b.pi);
+function sum(a){const t={trip:0,box:0,pl:0,job:0,km:0,cost:0,car:0,pay:0,fuel:0,oth:0,days:new Set(),pl_s:new Set(),names:new Set()};a.forEach(r=>{t.trip+=n(r.trip);t.box+=n(r.box);t.pl+=n(r.pl);t.job+=n(r.job);t.km+=kmOf(r);t.cost+=cost(r);t.car+=carOf(r);if(r.name)t.names.add(r.name);t.pay+=n(r.wage)+n(r.ot)+n(r.al)+n(r.drv)+n(r.r2)+n(r.r3);t.fuel+=fuel(r);t.oth+=n(r.tire)+n(r.park)+n(r.toll)+n(r.oth);t.days.add(r.date);if(r.pi<2)t.pl_s.add(r.pi)});return t}
+const id=(d,p,x)=>d+"_"+p+(p===2?"_"+x:"");
+function setLive(on,t){const e=$("#live");e.className="live"+(on?" on":"");e.querySelector("span").textContent=t}
+function sub(){if(S.unsub)S.unsub();S.rows={};S.stops={};if(!S.db){render();return}
+ const u1=S.db.collection("trips").where("month","==",S.ym).onSnapshot(q=>{S.rows={};q.docs.forEach(d=>{S.rows[d.id]=d.data()});setLive(true,"เรียลไทม์ · "+new Date().toLocaleTimeString("th-TH"));render()},e=>setLive(false,"เชื่อมต่อไม่ได้ ("+e.code+")"));
+ const u2=S.db.collection("stops").where("month","==",S.ym).onSnapshot(q=>{S.stops={};q.docs.forEach(d=>{S.stops[d.id]=d.data()});render()},()=>{});
+ S.unsub=()=>{u1();u2()}}
+const sb=(typeof supabase!=="undefined"&&SUPABASE_URL.startsWith("http"))?supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+const shim={collection(t){return{where(f,o,v){return{onSnapshot(next,err){
+ const load=async()=>{const{data,error}=await sb.from(t).select("id,data").eq(f,v);if(error){err&&err({code:error.code||"error",message:error.message});return}next({docs:data.map(r=>({id:r.id,exists:true,data:()=>r.data}))})};
+ load();const ch=sb.channel("rt-"+t+"-"+Math.random().toString(36).slice(2)).on("postgres_changes",{event:"*",schema:"public",table:t},load).subscribe();
+ return()=>sb.removeChannel(ch)}}}}},
+ doc(p){const i=p.indexOf("/"),t=p.slice(0,i),id=p.slice(i+1);return{
+  async set(o){const{error}=await sb.from(t).upsert({id,month:o.month,data:o,updated_at:new Date().toISOString()});if(error)throw error},
+  async delete(){const{data,error}=await sb.from(t).delete().eq("id",id).select();if(error)throw error;if(!data.length)throw{message:"ไม่มีสิทธิ์ลบ หรือไม่พบรายการ"}}}}};
+function showLogin(m){$("#lg").style.display="flex";$("#lge").textContent=m||(sb?"":"ยังไม่ได้ตั้งค่า SUPABASE_URL / SUPABASE_ANON_KEY ในไฟล์ index.html")}
+async function login(){if(!sb)return showLogin();const{data,error}=await sb.auth.signInWithPassword({email:$("#em").value.trim(),password:$("#pw").value});
+ if(error)return showLogin("เข้าสู่ระบบไม่สำเร็จ: ตรวจสอบชื่อผู้ใช้/รหัสผ่าน");start(data.session)}
+async function out(){await sb.auth.signOut();location.reload()}
+async function start(se){$("#lg").style.display="none";S.db=shim;
+ let role="";try{const{data}=await sb.from("profiles").select("role").eq("id",se.user.id).single();role=data?data.role:""}catch(e){}
+ const rl={admin:"ผู้ดูแล",editor:"คีย์ข้อมูล",viewer:"ดูอย่างเดียว"}[role]||"";
+ $("#who").innerHTML=`<span>${se.user.email}${rl?" · "+rl:""}</span><button class="btn" onclick="out()">ออกจากระบบ</button>`;sub()}
+async function init(){if(!sb){showLogin();return}const{data}=await sb.auth.getSession();if(data.session)start(data.session);else showLogin()}
+function tabs(){$("#vt").innerHTML=[["month","📊 แดชบอร์ดรายเดือน"],["day","📅 สรุปรายวัน"],["entry","✍️ คีย์ข้อมูล"]].map(([k,t])=>`<button class="${S.v===k?"a":""}" onclick="S.v='${k}';render()">${t}</button>`).join("")+(S.v==="month"?`<input type="month" style="width:auto" value="${S.ym}" onchange="S.ym=this.value;S.date=this.value+'-01';sub()">`:"")}
+const K=(a,b,u="")=>`<div class="k"><span>${a}</span><b>${b}</b><span>${u}</span></div>`;
+const sec=(t,b)=>`<div class="sec"><h2>${t}</h2><div class="sc">${b}</div></div>`;
+function month(){
+ const rs=rowsAll(),mr=rs.filter(r=>r.pi<2),t=sum(mr),ta=sum(rs),[y,m]=S.ym.split("-").map(Number);
+ $("#sub").textContent=`ประจำเดือน ${MN[m-1]} ${y+543} · ข้อมูลวันที่ 1-${new Date(y,m,0).getDate()} ${MN[m-1]} ${y+543}`;
+ let h=sec("สรุปภาพรวมการจัดส่ง",`<div class="kp">${K("จำนวนรถจัดส่ง",t.pl_s.size,"คัน")}${K("จำนวนเที่ยววิ่งรวม",f(t.trip),"เที่ยว")}${K("กล่องเสื้อผ้าจัดส่งรวม",f(t.box),"กล่อง")}${K("สถานที่จัดส่งรวม",f(t.pl),"จุด")}${K("ระยะทางวิ่งรวม",f(t.km),"กม.")}</div>`);
+ h+=sec("สรุปต้นทุนประจำเดือน",`<div class="kp">${K("ต้นทุนรวม",f(ta.cost),"บาท")}${K("ค่ารถ",f(ta.car),"บาท")}${K("ค่าแรง/OT/เบี้ยเลี้ยง",f(ta.pay),"บาท")}${K("ค่าน้ำมัน (ประมาณ)",f(ta.fuel),"บาท")}${K("ทางด่วน/จอด/อื่นๆ",f(ta.oth),"บาท")}${K("ต้นทุนต่อกล่อง",t.box?f(ta.cost/t.box,1):"-","บาท")}</div>`);
+ const vr=[0,1].map(i=>sum(mr.filter(r=>r.pi===i))),cell=(fn)=>`<td>${fn(vr[0])}</td><td>${fn(vr[1])}</td><td><b>${fn(t)}</b></td>`;
+ const L=[["จำนวนเที่ยววิ่ง (เที่ยว)",x=>f(x.trip)],["จำนวนกล่องส่ง (กล่อง)",x=>f(x.box)],["จำนวนสถานที่ส่ง (จุด)",x=>f(x.pl)],["ระยะทางวิ่งรวม (กม.)",x=>f(x.km)],["ระยะทางเฉลี่ย/เที่ยว (กม.)",x=>x.trip?f(x.km/x.trip,2):"-"],["คนขับ",x=>[...x.names].join(", ")||"-"],["ค่ารถยืนพื้น/วัน (บาท)",x=>"950"],["ต้นทุนรวม (บาท)",x=>f(x.cost)]];
+ h+=sec("สรุปเปรียบเทียบจำแนกตามทะเบียนรถ",`<table><tr><th>หัวข้อเปรียบเทียบ</th><th>${PL[0]}</th><th>${PL[1]}</th><th>รวมทั้งสิ้น</th></tr>${L.map(([a,fn])=>`<tr><td>${a}</td>${cell(fn)}</tr>`).join("")}</table>`);
+ const[dy]=[new Date(y,m,0).getDate()],logs=[];
+ for(let d=1;d<=dy;d++){const ds=S.ym+"-"+String(d).padStart(2,"0"),a=rs.filter(r=>r.date===ds),dw=new Date(y,m-1,d).getDay();
+  if(!a.length){logs.push(dw===0||dw===6?`<tr class="off"><td>${bd(ds)}</td><td colspan="6">วันหยุดประจำสัปดาห์</td></tr>`:`<tr class="off cl" onclick="goDay('${ds}')"><td>${bd(ds)}</td><td colspan="6">ยังไม่มีข้อมูล</td></tr>`);continue}
+  const x=sum(a.filter(r=>r.pi<2));logs.push(`<tr class="cl" onclick="goDay('${ds}')"><td>${bd(ds)}</td><td>${[...x.pl_s].sort().map(i=>PL[i]).join(", ")||"-"}</td><td>${[...x.names].join(", ")||"-"}</td><td>${x.pl}</td><td>${x.box}</td><td>${x.trip}</td><td>${f(x.km,1)}</td></tr>`)}
+ const hd=`<tr><th>วันที่</th><th>ทะเบียนรถที่วิ่ง</th><th>คนขับ</th><th>สถานที่</th><th>กล่อง</th><th>เที่ยว</th><th>กม.</th></tr>`;
+ h+=sec("สรุปการปฏิบัติงานและสถานที่จัดส่งรายวัน (แตะแถวเพื่อดูรายละเอียด)",`<div class="g2"><table>${hd}${logs.slice(0,15).join("")}</table><table>${hd}${logs.slice(15).join("")}</table></div>`);
+ const D=[];let mx=1,mc=1;for(let d=1;d<=dy;d++){const a=rs.filter(r=>+r.date.slice(8)===d),x0=sum(a.filter(r=>r.pi===0)),x1=sum(a.filter(r=>r.pi===1)),c=sum(a).cost;D.push([x0.box,x1.box,c]);mx=Math.max(mx,x0.box+x1.box);mc=Math.max(mc,c)}
+ h+=sec("กราฟ: จำนวนกล่องรายวัน แยกตามทะเบียนรถ",`<div class="m"><span style="color:#2f6fe4">■</span> ${PL[0]} &nbsp;<span style="color:#7fb0ff">■</span> ${PL[1]}</div><div class="bars">${D.map((v,i)=>`<div title="วันที่ ${i+1}: ${PL[0]} ${v[0]} / ${PL[1]} ${v[1]} กล่อง"><u style="height:${v[1]/mx*88}%;background:#7fb0ff;border-radius:3px 3px 0 0"></u><u style="height:${v[0]/mx*88}%;border-radius:0"></u>${i+1}</div>`).join("")}</div>`);
+ h+=sec("กราฟ: ต้นทุนรวมรายวัน (บาท)",`<div class="bars">${D.map((v,i)=>`<div title="วันที่ ${i+1}: ${f(v[2])} บาท"><u style="height:${v[2]/mc*88}%;background:#13408f"></u>${i+1}</div>`).join("")}</div>`);
+ const pr=[["ค่ารถ",ta.car,"#13408f"],["ค่าแรง/OT/เบี้ยเลี้ยง",ta.pay,"#2f6fe4"],["ค่าน้ำมัน",ta.fuel,"#7fb0ff"],["ทางด่วน/จอด/อื่นๆ",ta.oth,"#b8cdf2"]];
+ const sl=stAll(),sp=sl.filter(([k,x])=>okS(x)).length,pp=sl.length?Math.round(sp/sl.length*100):0;
+ const pie=(it,ct)=>{const tot=it.reduce((q,x)=>q+x[1],0);if(!tot)return'<div class="m">ยังไม่มีข้อมูล</div>';let c=0;const g=it.map(x=>{const p=c;c+=x[1]/tot*100;return x[2]+" "+p+"% "+c+"%"}).join(",");
+  return `<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div style="width:130px;height:130px;border-radius:50%;background:conic-gradient(${g});display:flex;align-items:center;justify-content:center"><div style="width:78px;height:78px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:13px">${ct}</div></div><div>${it.map(x=>`<div><span style="color:${x[2]}">■</span> ${x[0]} ${f(x[1])} (${Math.round(x[1]/tot*100)}%)</div>`).join("")}</div></div>`};
+ const vb=[0,1].map(i=>sum(mr.filter(r=>r.pi===i)).box);
+ h+=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px">`+sec("🥧 สัดส่วนต้นทุน",pie(pr,f(ta.cost)+"<br>บาท"))+sec("🥧 สัดส่วนกล่องตามทะเบียนรถ",pie([[PL[0],vb[0],"#2f6fe4"],[PL[1],vb[1],"#7fb0ff"]],f(vb[0]+vb[1])+"<br>กล่อง"))+sec("🥧 SLA ก่อน 15:00 น.",pie([["ผ่าน",sp,"var(--ok)"],["เกินเวลา/รอเวลา",sl.length-sp,"var(--bad)"]],pp+"%"))+`</div>`;
+ h+=slaSec(stAll(),"มาตรฐานเวลาจัดส่งรายสถานที่ & SLA",true);
+ if(!rs.length)h+=`<div class="sec"><div>ยังไม่มีข้อมูลเดือนนี้ (ถ้ามีข้อมูลเก่าใน Excel กดปุ่มนี้เพื่อโหลดเข้าระบบ) — <button class="btn p" onclick="imp()">นำเข้าข้อมูลกันยายน 2569 จาก Excel</button><span id="msg"></span></div></div>`;
+ return h}
+const TG="15:00";
+const mins=(a,b)=>{if(!a||!b)return null;const x=a.split(":"),y=b.split(":");return (y[0]*60+ +y[1])-(x[0]*60+ +x[1])};
+const okS=x=>!!x.fin&&x.fin<=TG;
+const stAll=d=>Object.entries(S.stops).filter(([k,x])=>!d||x.date===d).sort((p,q)=>(p[1].date+(p[1].arr||""))<(q[1].date+(q[1].arr||""))?-1:1);
+function slaSec(list,title,withDate){const tot=list.length,p=list.filter(([k,x])=>okS(x)).length,pct=tot?Math.round(p/tot*100):null;
+ const rows=list.map(([k,x],i)=>{const m=mins(x.arr,x.fin);const st=!x.fin?'<span class="m">รอบันทึกเวลา</span>':okS(x)?'<span style="color:var(--ok)">✔ ผ่านมาตรฐาน (เสร็จก่อน 15:00 น.)</span>':'<span style="color:var(--bad)">✘ เกินเวลา</span>';
+  return `<tr class="cl" onclick="editStop('${k}')"><td>${i+1}</td>${withDate?`<td>${bd(x.date)}</td>`:""}<td>${PL[x.pi]||""}</td><td style="text-align:left">${x.place||""}</td><td>${x.arr||"-"} น.</td><td>${x.fin||"-"} น.</td><td>${m==null?"-":m+" นาที"}</td><td>${st}</td></tr>`}).join("");
+ return sec(title+" (เป้าหมาย: สำเร็จก่อน 15:00 น.)",`<table><tr><th>ลำดับ</th>${withDate?"<th>วันที่</th>":""}<th>ทะเบียนรถ</th><th>สถานที่จัดส่ง</th><th>เวลาลูกค้ามา (Arrived)</th><th>เวลาจบงาน (Finished)</th><th>ระยะเวลาลงสินค้า</th><th>สถานะ SLA</th></tr>${rows||'<tr><td colspan="8" class="m">ยังไม่มีข้อมูลเวลาจัดส่ง — บันทึกได้ที่แท็บ "คีย์ข้อมูล"</td></tr>'}</table>`)
+ +`<div class="sec"><h2 style="display:flex;justify-content:space-between"><span>🎯 อัตราความสำเร็จ SLA ก่อน 15:00 น.</span><span>${pct==null?"-":pct+"%"}</span></h2><div class="m">ผ่าน ${p} จาก ${tot} สถานที่${tot-p?` · เกินเวลา/รอเวลา ${tot-p}`:""}</div></div>`}
+function editStop(k){S.sf=S.stops[k];S.date=S.sf.date;S.v="entry";render()}
+function goDay(d){S.date=d;S.v="day";render()}
+function day(){
+ const rs=rowsAll().filter(r=>r.date===S.date),t=sum(rs);
+ const head=["รถ/พนักงาน","คนขับ","กล่อง","สถานที่","เที่ยว","กม.","ค่ารถ","ค่าแรง+OT+เบี้ยเลี้ยง","น้ำมัน","ทางด่วน","จอด","ต้นทุน"];
+ const b=rs.map(r=>`<tr class="cl" onclick="S.pi=${r.pi};S.v='entry';render()"><td>${PL[r.pi]}</td><td>${r.name||""}</td><td>${n(r.box)}</td><td>${n(r.pl)}</td><td>${n(r.trip)}</td><td>${kmOf(r)}</td><td>${f(carOf(r))}</td><td>${f(n(r.wage)+n(r.ot)+n(r.al)+n(r.drv)+n(r.r2)+n(r.r3))}</td><td>${f(fuel(r))}</td><td>${f(r.toll)}</td><td>${f(r.park)}</td><td><b>${f(cost(r))}</b></td></tr>`).join("");
+ return `<div class="sec"><div><label>เลือกวันที่</label><input type="date" value="${S.date}" onchange="S.date=this.value;if(S.ym!==S.date.slice(0,7)){S.ym=S.date.slice(0,7);sub()}else render()"></div></div>`+sec("สรุปรายวัน "+bd(S.date),`<div class="kp">${K("กล่อง",t.box)}${K("สถานที่",t.pl)}${K("เที่ยว",t.trip)}${K("กม.",t.km)}${K("ต้นทุนรวม (บาท)",f(t.cost))}</div><br><table><tr>${head.map(x=>`<th>${x}</th>`).join("")}</tr>${b||`<tr><td colspan="12" class="m">ยังไม่มีข้อมูลวันนี้</td></tr>`}</table>`)+slaSec(stAll(S.date),"SLA รายสถานที่ วันที่ "+bd(S.date),false)}
+function entry(){
+
+ const sf=S.sf||{},sI=(a,l,t,v)=>`<div><label>${l}</label><input id="${a}" type="${t}" value="${v??""}"></div>`;
+ const sla=`<div class="sec"><h2>บันทึกเวลาจัดส่งรายสถานที่ (SLA ก่อน 15:00 น.)</h2><div><div class="f">${sI("sdt","วันที่","date",sf.date||S.date)}<div><label>ทะเบียนรถ</label><select id="spi">${PL.slice(0,2).map((a,j)=>`<option value="${j}" ${(sf.pi??0)===j?"selected":""}>${a}</option>`).join("")}</select></div>${sI("spl","สถานที่จัดส่ง","text",sf.place)}${sI("sar","เวลาลูกค้ามา (Arrived)","time",sf.arr)}${sI("sfn","เวลาจบงาน (Finished)","time",sf.fin)}</div>
+ <p><button class="btn p" onclick="saveStop()">💾 บันทึกสถานที่</button> <button class="btn d" onclick="delStop()">ลบ</button> <button class="btn" onclick="S.sf=null;render()">ล้างฟอร์ม</button><span id="msg2"></span></p><p class="m">สถานะผ่านเมื่อเวลาจบงานไม่เกิน 15:00 น. · บันทึกซ้ำที่วัน/รถ/สถานที่เดิม = แก้ไขรายการเดิม · แตะแถวในตาราง SLA เพื่อโหลดมาแก้ไข</p></div></div>`;
+ const k=S.pi,x=S.rows[id(S.date,k,"")]||S.rows[id(S.date,k,"a")]||{},dv={car:k<2?950:0,wage:426,ot:80,al:30,drv:50},g=a=>x[a]??dv[a]??"";
+ const i=(a,l,t="number")=>`<div><label>${l}</label><input id="${a}" type="${t}" inputmode="decimal"${a==="name"?' list="dn"':""} value="${g(a)}"></div>`;
+ return `<div class="sec"><h2>คีย์ข้อมูลรายวัน (บันทึกซ้ำที่วัน/รถเดิม = แก้ไขรายการเดิม)</h2><div><div class="f">
+ <div><label>วันที่</label><input id="date" type="date" value="${S.date}" onchange="S.date=this.value;if(S.ym!==S.date.slice(0,7)){S.ym=S.date.slice(0,7);sub()}else render()"></div>
+ <datalist id="dn">${[...new Set([...SEED.map(q=>q[2]),...rowsAll().map(r=>r.name)])].filter(Boolean).map(q=>`<option value="${q}">`).join("")}</datalist><div><label>ขับรถทะเบียน</label><select id="pi" onchange="S.pi=+this.value;render()">${PL.map((a,j)=>`<option value="${j}" ${j===k?"selected":""}>${a}</option>`).join("")}</select></div>
+ ${i("name","ใครขับ (ชื่อคนขับ)","text")}${i("car","ค่ารถ (ยืนพื้น 950/วัน)")}${i("wage","ค่าแรง/วัน")}${i("ot","OT")}${i("al","เบี้ยเลี้ยง")}${i("drv","ค่าขับ")}${i("r2","รอบ 2")}${i("r3","รอบ 3")}
+ ${i("box","จำนวนกล่อง")}${i("pl","จำนวนสถานที่")}${i("job","จำนวนใบงาน")}${i("trip","จำนวนเที่ยวรถ")}${i("ks","ไมล์เริ่ม")}${i("ke","ไมล์สิ้นสุด")}${i("tire","ค่าปะยาง")}${i("park","ค่าจอดรถ")}${i("toll","ค่าทางด่วน")}${i("oth","อื่นๆ (บาท)")}
+ </div><p><button class="btn p" onclick="save()">💾 บันทึก</button> <button class="btn d" onclick="del()">ลบรายการ</button><span id="msg"></span></p>
+ <p class="m">น้ำมันคำนวณอัตโนมัติ: (ไมล์สิ้นสุด − ไมล์เริ่ม) ÷ 8 กม./ลิตร × 39 บาท · ต้นทุน = ค่ารถ + ค่าแรง + OT + เบี้ยเลี้ยง + ค่าขับ + รอบ 2/3 + น้ำมัน + ปะยาง + จอด + ทางด่วน + อื่นๆ · "พนักงานเสริม" ใช้บันทึกคนขับที่ไม่มีรถ (ใส่แค่ค่าแรง/OT/เบี้ยเลี้ยง)</p></div></div>`+sla}
+function rec(){const o={date:$("#date").value,pi:+$("#pi").value,name:$("#name").value};o.month=o.date.slice(0,7);
+ ["car","wage","ot","al","drv","r2","r3","box","pl","job","trip","ks","ke","tire","park","toll","oth"].forEach(a=>o[a]=n($("#"+a).value));return o}
+const msg=(t,e)=>{const m=$("#msg");if(m){m.style.color=e?"var(--bad)":"var(--ok)";m.textContent=t}};
+async function save(){const o=rec();if(!o.date)return msg("เลือกวันที่ก่อน",1);
+ try{if(S.db)await S.db.doc("trips/"+id(o.date,o.pi,"a")).set(o);else{S.rows[id(o.date,o.pi,"a")]=o;render()}msg("✓ บันทึกแล้ว")}catch(e){msg("บันทึกไม่ได้: "+(e.code||e.message)+" (ต้องมีสิทธิ์ Contributor ขึ้นไป)",1)}}
+async function del(){const o=rec();try{if(S.db)await S.db.doc("trips/"+id(o.date,o.pi,"a")).delete();else{delete S.rows[id(o.date,o.pi,"a")];render()}msg("ลบแล้ว")}catch(e){msg("ลบไม่ได้",1)}}
+async function imp(){if(!S.db)return msg("ต้องเปิดผ่านลิงก์ artifact เพื่อบันทึกลงฐานข้อมูล",1);
+ try{for(let j=0;j<SEED.length;j++){const s=SEED[j],o={date:s[0],month:s[0].slice(0,7),pi:s[1],name:s[2],car:s[1]<2?950:0,wage:426,ot:80,al:30,drv:50,r2:s[3],r3:s[4],box:s[5],pl:s[6],job:s[7],ks:s[8],ke:s[9],trip:s[10],tire:s[11],park:s[12],toll:s[13],oth:s[14]};
+  await S.db.doc("trips/"+id(o.date,o.pi,"a")).set(o);msg("กำลังนำเข้า "+(j+1)+"/"+SEED.length)}msg("✓ นำเข้าครบแล้ว")}catch(e){msg("นำเข้าไม่สำเร็จ: "+(e.code||e.message),1)}}
+
+const hs=t=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h.toString(36)};
+const msg2=(t,e)=>{const m=$("#msg2");if(m){m.style.color=e?"var(--bad)":"var(--ok)";m.textContent=" "+t}};
+function stRec(){const d=$("#sdt").value,o={date:d,month:d.slice(0,7),pi:+$("#spi").value,place:$("#spl").value.trim(),arr:$("#sar").value,fin:$("#sfn").value};return[o,"stops/"+d+"_"+o.pi+"_"+hs(o.place)]}
+async function saveStop(){const[o,p]=stRec();if(!o.date||!o.place)return msg2("กรอกวันที่และสถานที่ก่อน",1);
+ try{if(S.db)await S.db.doc(p).set(o);else{S.stops[p.slice(6)]=o;render()}S.sf=null;msg2("✓ บันทึกแล้ว")}catch(e){msg2("บันทึกไม่ได้: "+(e.code||e.message),1)}}
+async function delStop(){const[o,p]=stRec();try{if(S.db)await S.db.doc(p).delete();else{delete S.stops[p.slice(6)];render()}S.sf=null;msg2("ลบแล้ว")}catch(e){msg2("ลบไม่ได้",1)}}
+function render(){tabs();$("#v").innerHTML=S.v==="month"?month():S.v==="day"?day():entry();if(S.v!=="month"){const[y,m]=S.ym.split("-").map(Number);$("#sub").textContent="ประจำเดือน "+MN[m-1]+" "+(y+543)}}
+S.ym="2026-09";S.date="2026-09-01";render();init();
+</script></body></html>
